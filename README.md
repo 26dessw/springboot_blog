@@ -6,6 +6,7 @@ springboot个人博客项目
 后端：Spring Boot + JPA + thymeleaf模板
 数据库：MySql
 前端：Semantic UI框架
+天气预报+音乐世界：Vue
 
 开发环境：idea2018.3+jdk8+maven3.5.0
 
