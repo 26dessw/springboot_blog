@@ -1,0 +1,13 @@
+#thymeleaf模板
+spring:
+  thymeleaf:
+    mode: HTML
+#环境的选择
+  profiles:
+    active: dev
+
+  messages:
+    basename: i18n/messages
+
+comment.avatar: https://unsplash.it/100/100?image=1005
+

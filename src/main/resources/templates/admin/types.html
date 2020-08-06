@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分类管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+  <!--导航-->
+  <nav th:replace="admin/_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+  </nav>
+
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <!--向后端发送/admin/types/input请求，跳转到新增页面-->
+        <a href="#" th:href="@{/admin/types/input}" class="item">新增</a>
+        <!--向后端发送/admin/types请求，跳转到分类列表页面-->
+        <a href="#" th:href="@{/admin/types}" class="teal active item">列表</a>
+      </div>
+    </div>
+  </div>
+
+  <!--中间内容-->
+  <div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+      <!--若后端返回message不为空，则显示后端返回的提示信息-->
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="header">提示：</div>
+        <p th:text="${message}">恭喜，操作成功！</p>
+      </div>
+
+
+      <table class="ui compact teal table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>名称</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+
+
+        <!--遍历获取后端返回的分页后的博客类型-->
+        <tbody>
+          <tr th:each="type,iterStat : ${page.content}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${type.name}">刻意练习清单</td>
+
+            <td>
+              <!--向后端/admin/types/{id}/input(id=${type.id})发送请求，根据id获取数据后进行编辑-->
+              <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">编辑</a>
+              <!--向后端/admin/types/{id}/delete(id=${type.id})发送请求，根据id删除该博客分类-->
+              <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">删除</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="6" >
+              <!--页数大于1时才显示上下分页-->
+              <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                <!--向后端/admin/types(page=${page.number}-1)发送请求，根据page获取上一页数据,若为首页则不显示-->
+                <a th:href="@{/admin/types(page=${page.number}-1)}" class="  item" th:unless="${page.first}">上一页</a>
+                <!--向后端/admin/types(page=${page.number}+1)发送请求，根据page获取下一页数据，若为尾页则不显示-->
+                <a th:href="@{/admin/types(page=${page.number}+1)}" class=" item" th:unless="${page.last}">下一页</a>
+              </div>
+              <!--向后端/admin/types/{id}/input发送请求，跳转到新增页面admin/types-input-->
+              <a href="#" th:href="@{/admin/types/input}"  class="ui mini right floated teal basic button">新增</a>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+
+  <!--底部footer模板-->
+  <footer th:replace="admin/_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+  </footer>
+
+
+
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+      .on('click', function () {
+        $(this)
+          .closest('.message')
+          .transition('fade');
+      });
+  </script>
+</body>
+</html>
